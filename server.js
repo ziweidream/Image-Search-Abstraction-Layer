@@ -38,19 +38,22 @@ app.get('/image', function(req, res) {
       return;
    }
   response.setEncoding('utf8');
-  var rawData = '';
-  response.on('data', (chunk) => { rawData += chunk;});
+  var apiData = '';
+  response.on('data', (chunk) => { apiData += chunk;});
   response.on('end', () => {
     try {
-      var result = JSON.parse(rawData);
+      var result = JSON.parse(apiData);
       var result1 = result.items;
       var display = [];
       for (let i=0; i<result1.length; i++) {
         var item = {};
-        item.link = result1[i].link;
+        item.image = result1[i].link;
+        item.snippet = result1[i].snippet;
+        item.thumbnail = result1[i].image.thumbnailLink;
+        item.context = result1[i].image.contextLink;
         display.push(item);}      
       
-      res.send(result1);
+      res.send(display);
     } catch (e) {
       console.error(e.message);
     }
