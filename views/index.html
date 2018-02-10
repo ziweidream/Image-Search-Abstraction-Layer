@@ -39,7 +39,7 @@
     <!-- Your web-app is https, so your scripts need to be too -->
     <script>
   (function() {
-    var cx = '011940694808885930266:hwnnsctwhi0';
+    var cx = process.env.SECRET;
     var gcse = document.createElement('script');
     gcse.type = 'text/javascript';
     gcse.async = true;
