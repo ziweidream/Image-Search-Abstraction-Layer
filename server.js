@@ -17,15 +17,15 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/image/:q/:n*?', function(req, res) {
-  var API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
-  var CSE_ID = "011940694808885930266:hwnnsctwhi0";
-  var option = '&num=10&searchType=image&start=' + req.params.n
+app.get('/image/:q/:n?', function(req, res) {
+  const API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
+  const CSE_ID = "011940694808885930266:hwnnsctwhi0";
+  let option = '&num=10&searchType=image&start=' + req.params.n
   if(!req.params.n){
 // do something when there is no optionalParam
     option = '&q=cats&num=10&searchType=image&start=1'
   }
-  var endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
+  const endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
         CSE_ID + '&q=' + req.params.q + option
   https.get(endPoint, (response) => {
     const statusCode  = response.statusCode;
