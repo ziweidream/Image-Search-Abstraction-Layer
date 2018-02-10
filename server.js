@@ -43,8 +43,14 @@ app.get('/image', function(req, res) {
   response.on('end', () => {
     try {
       var result = JSON.parse(rawData);
+      var result1 = result.items;
+      var display = [];
+      for (let i=0; i<result1.length; i++) {
+        var item = {};
+        item.link = result1[i].link;
+        display.push(item);}      
       
-      res.send(result.items);
+      res.send(result1);
     } catch (e) {
       console.error(e.message);
     }
