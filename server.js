@@ -22,30 +22,25 @@ app.get('/image', function(req, res) {
   var CSE_ID = "011940694808885930266:hwnnsctwhi0";
   var endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
         CSE_ID + '&q=cats&num=10&searchType=image&start=1'
-      https.get(endPoint, (response) => {
-      const statusCode  = response.statusCode;
-      const contentType = response.headers['content-type'];
-
-      var error;
-      if (statusCode !== 200) {
-    error = new Error('Request Failed.\n' +
-                      `Status Code: ${statusCode}`);
-  }     else if (!/^application\/json/.test(contentType)) {
-    error = new Error('Invalid content-type.\n' +
+  https.get(endPoint, (response) => {
+    const statusCode  = response.statusCode;
+    const contentType = response.headers['content-type'];
+    var error;
+    if (statusCode !== 200) {
+      error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);    
+    }else if(!/^application\/json/.test(contentType)) {
+      error = new Error('Invalid content-type.\n' +
                       `Expected application/json but received ${contentType}`);
-  }
-      if (error) {
-    console.error(error.message);
-    // consume responseponse data to free up memory
-    response.resume();
-    return;
-  }
-
-      response.setEncoding('utf8');
-      var rawData = '';
-      response.on('data', (chunk) => { rawData += chunk; 
-  });
-      response.on('end', () => {
+    }
+    if (error) {
+      console.error(error.message);
+      response.resume();
+      return;
+   }
+  response.setEncoding('utf8');
+  var rawData = '';
+  response.on('data', (chunk) => { rawData += chunk;});
+  response.on('end', () => {
     try {
       res.send(JSON.parse(rawData));
     } catch (e) {
