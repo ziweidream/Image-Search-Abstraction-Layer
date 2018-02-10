@@ -2,9 +2,9 @@
 // where your node app starts
 
 // init project
-var https = require('https');
-var express = require('express');
-var app = express();
+const https = require('https');
+const express = require('express');
+const app = express();
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -47,11 +47,11 @@ app.get('/image/:q/:n?', function(req, res) {
   response.on('data', (chunk) => { apiData += chunk;});
   response.on('end', () => {
     try {
-      var result = JSON.parse(apiData);
-      var result1 = result.items;
+      const result = JSON.parse(apiData);
+      const result1 = result.items;
       var display = [];
       for (let i=0; i<result1.length; i++) {
-        var item = {};
+        let item = {};
         item.image = result1[i].link;
         item.snippet = result1[i].snippet;
         item.thumbnail = result1[i].image.thumbnailLink;
