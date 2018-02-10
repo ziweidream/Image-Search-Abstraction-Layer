@@ -42,7 +42,9 @@ app.get('/image', function(req, res) {
   response.on('data', (chunk) => { rawData += chunk;});
   response.on('end', () => {
     try {
-      res.send(JSON.parse(rawData));
+      var result = JSON.parse(rawData);
+      
+      res.send(result.items);
     } catch (e) {
       console.error(e.message);
     }
