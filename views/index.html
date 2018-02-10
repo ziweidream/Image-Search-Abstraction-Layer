@@ -17,8 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/style.css">
-     <script src="https://www.googleapis.com/customsearch/v1?key=<span class="apiparam">AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA</span>&amp;cx=017576662512468239146:omuauf_lfve&amp;q=cars&amp;callback=hndlr">
-    </script>
+    
   </head>
   <body>
     <header>
@@ -37,19 +36,7 @@
         Remix this in Glitch
       </a>
     </footer>
-    <script>
-      function hndlr(response) {
-      for (var i = 0; i < response.items.length; i++) {
-        var item = response.items[i];
-        // in production code, item.htmlTitle should have the HTML entities escaped.
-        document.getElementById("content").innerHTML += "<br>" + item.htmlTitle;
-      }
-    }    
-    </script>
-   
-
-
-    <!-- Your web-app is https, so your scripts need to be too -->
+       <!-- Your web-app is https, so your scripts need to be too -->
     <script>
   (function() {
     var cx = "011940694808885930266:hwnnsctwhi0";

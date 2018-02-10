@@ -2,6 +2,7 @@
 // where your node app starts
 
 // init project
+var https = require('https');
 var express = require('express');
 var app = express();
 
@@ -16,22 +17,46 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
-});
+app.get('/image', function(req, res) {
+  var API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
+  var CSE_ID = "011940694808885930266:hwnnsctwhi0";
+  var endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
+        CSE_ID + '&q=cats&num=10&searchType=image&start=1'
+      https.get(endPoint, (response) => {
+      const statusCode  = response.statusCode;
+      const contentType = response.headers['content-type'];
 
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
-});
+      var error;
+      if (statusCode !== 200) {
+    error = new Error('Request Failed.\n' +
+                      `Status Code: ${statusCode}`);
+  }     else if (!/^application\/json/.test(contentType)) {
+    error = new Error('Invalid content-type.\n' +
+                      `Expected application/json but received ${contentType}`);
+  }
+      if (error) {
+    console.error(error.message);
+    // consume responseponse data to free up memory
+    response.resume();
+    return;
+  }
 
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+      response.setEncoding('utf8');
+      var rawData = '';
+      response.on('data', (chunk) => { rawData += chunk; 
+  });
+      response.on('end', () => {
+    try {
+      res.send(JSON.parse(rawData));
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
+}).on('error', (e) => {
+  console.error(`Got error: ${e.message}`);
+}); 
+  //res.sendFile(process.cwd() + '/views/index.html');
+})
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
