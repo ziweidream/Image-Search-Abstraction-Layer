@@ -15,7 +15,8 @@ body {
 
 h1 {
   font-weight: bold;
-  color: pink;
+  color: blue;
+  margin-top: 30px;
 }
 
 .bold {
@@ -27,7 +28,7 @@ h1 {
 }
 
 footer {
-  margin-top: 50px;
+  margin-top: 150px;
   padding-top: 25px;
   border-top: 1px solid lightgrey;
 }
