@@ -28,13 +28,25 @@
   
      <gcse:searchbox></gcse:searchbox>
       <gcse:searchresults defaulttoimagesearch="true"></gcse:searchresults>
-  
-
+   <div id="content"></div>
+    
     <footer>
       <a href="https://glitch.com">
         Remix this in Glitch
       </a>
     </footer>
+    <script>
+      function hndlr(response) {
+      for (var i = 0; i < response.items.length; i++) {
+        var item = response.items[i];
+        // in production code, item.htmlTitle should have the HTML entities escaped.
+        document.getElementById("content").innerHTML += "<br>" + item.htmlTitle;
+      }
+    }    
+    </script>
+    <script src="https://www.googleapis.com/customsearch/v1?key=<span class="apiparam">AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA</span>&amp;cx=017576662512468239146:omuauf_lfve&amp;q=cars&amp;callback=hndlr">
+    </script>
+
 
     <!-- Your web-app is https, so your scripts need to be too -->
     <script>
