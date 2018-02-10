@@ -17,7 +17,7 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/image/:q?offset=:n?', function(req, res) {
+app.get(['/image//image/:q/offset=:n?'], function(req, res) {
   var API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
   var CSE_ID = "011940694808885930266:hwnnsctwhi0";
   var endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
