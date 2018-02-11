@@ -2,9 +2,9 @@ var MongoClient = require('mongodb').Mongoclient;
 var https = require('https');
 var express = require('express');
 var app = express();
-var url = "mongodb://me:123@ds131698.mlab.com:31698/images"; 
+var url = "mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc"; 
 function storeImage(str) {    
-  MongoClient.connect("mongodb://me:123@ds131698.mlab.com:31698/images", function(err, db) {
+  MongoClient.connect("mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc", function(err, db) {
   if (err) throw err;
   var dbo = db.db("images");   
   var t = Date();
@@ -21,7 +21,7 @@ app.get("/", function (request, response) {
 });
 
 app.get('/image/:q', function(req, res) {
-  MongoClient.connect("mongodb://me:123@ds131698.mlab.com:31698/images", function(err, db) {
+  MongoClient.connect("mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc", function(err, db) {
   if (err) throw err;
   var dbo = db.db("images");   
   var t = Date();
