@@ -1,3 +1,4 @@
+//const MongoClient = require('mongodb').MongoClient;
 const https = require('https');
 const express = require('express');
 const app = express();
@@ -52,6 +53,10 @@ app.get('/image/:q', function(req, res) {
 }).on('error', (e) => {
   console.error(`Got error: ${e.message}`);
 });   
+})
+
+app.get("/image/latest", function(req, res){
+  res.send("hello");
 })
 
 var listener = app.listen(process.env.PORT, function () {
