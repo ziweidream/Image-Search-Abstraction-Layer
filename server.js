@@ -1,13 +1,8 @@
-// server.js
-// where your node app starts
 var https = require('https');
 var MongoClient = require('mongodb').MongoClient;
-// init project
 var express = require('express');
 var app = express();
 
-// we've started you off with Express,
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
 function saveQuery(str) {
   var url = process.env.MONGODB_URI;;
   MongoClient.connect(url, function(err, db) {
@@ -21,17 +16,14 @@ function saveQuery(str) {
     };
     dbo.collection("latest").insertOne(myobj, function(err, res) {
       if (err)
-        throw err;
-      console.log("1 document inserted");
+        throw err;  
       db.close();
     });
   });
 }
 
-// http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function(request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -41,15 +33,12 @@ app.get('/image/:q', function(req, res) {
   const API_KEY = process.env.API_KEY;
   const CSE_ID = process.env.CSE_ID;
   var offset = req.query.offset || 1;
-  const strUrl = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + CSE_ID + '&q=' + req.params.q + '&num=10&searchType=image&start=' + offset;
+  const strUrl = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + CSE_ID + '&q=' + req.params.q + '&searchType=image&start=' + offset;
   https.get(strUrl, (response) => {
     const statusCode = response.statusCode;
-    const contentType = response.headers['content-type'];
     var error;
     if (statusCode !== 200) {
       error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
-    } else if (!/^application\/json/.test(contentType)) {
-      error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
     }
     if (error) {
       console.error(error.message);
@@ -93,7 +82,7 @@ app.get('/latest', function(req, res) {
     var sort = {
       when: -1
     };
-    dbo.collection("latest").find({}, {"_id":0}).sort(sort).limit(10).toArray(function(err, result) {
+    dbo.collection("latest").find({}, {_id: 0}).sort(sort).limit(10).toArray(function(err, result) {
       if (err)
         throw err;
       res.send(result);
@@ -102,6 +91,6 @@ app.get('/latest', function(req, res) {
   });
 })
 
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
