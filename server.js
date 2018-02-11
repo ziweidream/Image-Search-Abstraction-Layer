@@ -1,9 +1,21 @@
-//const MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
 const https = require('https');
 const express = require('express');
 const app = express();
 app.use(express.static('public'));
-
+function storeImage(str) {
+  var url = "mongodb://vivi:123@ds231658.mlab.com:31658/imagesearch"; 
+  MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("imagesearch");   
+  var t = Date();
+  var obj = { query: str, when: t}; 
+  dbo.collection("latestqueries").insertOne(obj, function(err, res) {
+    if (err) throw err;   
+    db.close();
+  });
+});
+}
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -55,7 +67,8 @@ app.get('/image/:q', function(req, res) {
 });   
 })
 
-app.get("/image/latest", function(req, res){
+app.get("/api/latest", function(req, res){
+  
   res.send("hello");
 })
 
