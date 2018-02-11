@@ -1,10 +1,10 @@
-var MongoClient = require('mongodb').MongoClient;
-const https = require('https');
-const express = require('express');
-const app = express();
-app.use(express.static('public'));
+
+var https = require('https');
+var express = require('express');
+var app = express();
 function storeImage(str) {
-  var url = "mongodb://vivi:123@ds231658.mlab.com:31658/imagesearch"; 
+  var MongoClient = require('mongodb').Mongoclient;
+  var url = process.env.MONGODB_URI; 
   MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("imagesearch");   
@@ -16,6 +16,7 @@ function storeImage(str) {
   });
 });
 }
+app.use(express.static('public'));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -23,6 +24,7 @@ app.get("/", function (request, response) {
 app.get('/image/:q', function(req, res) {
   const API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
   const CSE_ID = "011940694808885930266:hwnnsctwhi0";
+  storeImage(req.params.q);
   var offset = req.query.offset || 1;
   const endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
         CSE_ID + '&q=' + req.params.q + '&num=10&searchType=image&start=' + offset
