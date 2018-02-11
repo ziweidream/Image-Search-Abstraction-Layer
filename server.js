@@ -2,40 +2,34 @@ var MongoClient = require('mongodb').Mongoclient;
 var https = require('https');
 var express = require('express');
 var app = express();
-var url = "mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc"; 
-function storeImage(str) {    
-  MongoClient.connect("mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc", function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("images");   
-  var t = Date();
-  var obj = { query: str, when: t}; 
-  dbo.collection("latest").insertOne(obj, function(err, res) {
-    if (err) throw err;   
-    db.close();
+
+function saveQuery(str) {
+  var url = "mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc";
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("images_fcc");
+    var t = Date();
+    var myobj = { name: str, when: t };
+    dbo.collection("latest").insertOne(myobj, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");
+      db.close();
+    });
   });
-});
 }
+
 app.use(express.static('public'));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/image/:q', function(req, res) {
-  MongoClient.connect("mongodb://vivi:123@ds125198.mlab.com:25198/images_fcc", function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("images");   
-  var t = Date();
-  var obj = { query: req.params.q, when: t}; 
-  dbo.collection("latest").insertOne(obj, function(err, res) {
-    if (err) throw err;   
-    db.close();
-  });
-});
+app.get('/image/:q', function(request, response) {
+  saveQuery(request.params.q);
   const API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
   const CSE_ID = "011940694808885930266:hwnnsctwhi0";  
-  var offset = req.query.offset || 1;
+  var offset = request.query.offset || 1;
   const endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
-        CSE_ID + '&q=' + req.params.q + '&num=10&searchType=image&start=' + offset
+        CSE_ID + '&q=' + request.params.q + '&num=10&searchType=image&start=' + offset
   https.get(endPoint, (response) => {
     const statusCode  = response.statusCode;
     const contentType = response.headers['content-type'];
@@ -67,7 +61,7 @@ app.get('/image/:q', function(req, res) {
         item.context = result1[i].image.contextLink;
         display.push(item);
       }           
-      res.send(display);
+      response.send(display);
     } catch (e) {
       console.error(e.message);
     }
