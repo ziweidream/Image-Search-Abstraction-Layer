@@ -1,10 +1,10 @@
-
+var MongoClient = require('mongodb').Mongoclient;
 var https = require('https');
 var express = require('express');
 var app = express();
 function storeImage(str) {
-  var MongoClient = require('mongodb').Mongoclient;
-  var url = process.env.MONGODB_URI; 
+ 
+  var url = "mongodb://vivi:123@ds131698.mlab.com:31698/images"; 
   MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("imagesearch");   
