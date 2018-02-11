@@ -41,8 +41,8 @@ app.get('/image/:q', function(req, res) {
   const API_KEY = process.env.API_KEY;
   const CSE_ID = process.env.CSE_ID;
   var offset = req.query.offset || 1;
-  const endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + CSE_ID + '&q=' + req.params.q + '&num=10&searchType=image&start=' + offset
-  https.get(endPoint, (response) => {
+  const strUrl = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + CSE_ID + '&q=' + req.params.q + '&num=10&searchType=image&start=' + offset;
+  https.get(strUrl, (response) => {
     const statusCode = response.statusCode;
     const contentType = response.headers['content-type'];
     var error;
@@ -93,11 +93,7 @@ app.get('/latest', function(req, res) {
     var sort = {
       when: -1
     };
-    dbo.collection("latest").find({}, {      
-      name: 1,
-      when: 1,
-      _id: 0
-    }).sort(sort).limit(10).toArray(function(err, result) {
+    dbo.collection("latest").find({}, {"_id":0}).sort(sort).limit(10).toArray(function(err, result) {
       if (err)
         throw err;
       res.send(result);
