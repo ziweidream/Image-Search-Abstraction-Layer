@@ -21,6 +21,16 @@ app.get("/", function (request, response) {
 });
 
 app.get('/image/:q', function(req, res) {
+  MongoClient.connect("mongodb://me:123@ds131698.mlab.com:31698/images", function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("images");   
+  var t = Date();
+  var obj = { query: req.params.q, when: t}; 
+  dbo.collection("latest").insertOne(obj, function(err, res) {
+    if (err) throw err;   
+    db.close();
+  });
+});
   const API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
   const CSE_ID = "011940694808885930266:hwnnsctwhi0";  
   var offset = req.query.offset || 1;
@@ -65,7 +75,7 @@ app.get('/image/:q', function(req, res) {
 }).on('error', (e) => {
   console.error(`Got error: ${e.message}`);
 });   
-  storeImage(req.params.q);
+
 })
 
 app.get("/api/latest", function(req, res){
