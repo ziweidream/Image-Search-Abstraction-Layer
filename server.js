@@ -2,14 +2,14 @@ var MongoClient = require('mongodb').Mongoclient;
 var https = require('https');
 var express = require('express');
 var app = express();
-var url = "mongodb://vivi:123@ds131698.mlab.com:31698/images"; 
+var url = "mongodb://me:123@ds131698.mlab.com:31698/images"; 
 function storeImage(str) {    
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect("mongodb://me:123@ds131698.mlab.com:31698/images", function(err, db) {
   if (err) throw err;
-  var dbo = db.db("imagesearch");   
+  var dbo = db.db("images");   
   var t = Date();
   var obj = { query: str, when: t}; 
-  dbo.collection("latestqueries").insertOne(obj, function(err, res) {
+  dbo.collection("latest").insertOne(obj, function(err, res) {
     if (err) throw err;   
     db.close();
   });
