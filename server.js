@@ -2,9 +2,8 @@ var MongoClient = require('mongodb').Mongoclient;
 var https = require('https');
 var express = require('express');
 var app = express();
-function storeImage(str) {
- 
-  var url = "mongodb://vivi:123@ds131698.mlab.com:31698/images"; 
+var url = "mongodb://vivi:123@ds131698.mlab.com:31698/images"; 
+function storeImage(str) {    
   MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("imagesearch");   
@@ -23,8 +22,7 @@ app.get("/", function (request, response) {
 
 app.get('/image/:q', function(req, res) {
   const API_KEY = "AIzaSyA8Q1UzLWjDfVp_RJ7MKdPiC7V66vyo-TA";
-  const CSE_ID = "011940694808885930266:hwnnsctwhi0";
-  storeImage(req.params.q);
+  const CSE_ID = "011940694808885930266:hwnnsctwhi0";  
   var offset = req.query.offset || 1;
   const endPoint = 'https://www.googleapis.com/customsearch/v1?key=' + API_KEY + '&cx=' + 
         CSE_ID + '&q=' + req.params.q + '&num=10&searchType=image&start=' + offset
@@ -67,6 +65,7 @@ app.get('/image/:q', function(req, res) {
 }).on('error', (e) => {
   console.error(`Got error: ${e.message}`);
 });   
+  storeImage(req.params.q);
 })
 
 app.get("/api/latest", function(req, res){
